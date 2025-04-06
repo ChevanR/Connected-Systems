@@ -1,18 +1,24 @@
 version: '3'
 services:
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile.server
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
     ports:
-      - "5050:5050"
+      - "1883:1883"
+      - "1884:1884"
+      - "9001:9001"
     restart: always
+
   dashboard:
+    container_name: dashboard
     build:
       context: ./dashboard
       dockerfile: Dockerfile.dashboard
     ports:
-      - "8080:80"
-    depends_on:
-      - server
+      - "443:443"
+      - "80:80"
     restart: always

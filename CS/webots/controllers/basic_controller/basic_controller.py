@@ -1,10 +1,11 @@
-#!/usr/bin/env python3
+
 import paho.mqtt.client as mqtt
 import json
 import time
 import random
 import logging
 import sys
+
 from controller import Supervisor
 
 # --- Logging setup ---

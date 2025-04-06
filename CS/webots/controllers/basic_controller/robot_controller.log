@@ -1,0 +1,93 @@
+2025-04-06 22:57:15,316 - INFO - Webots robot successfully initialized
+2025-04-06 22:57:15,316 - INFO - Robot start position: [0.0, 0.0, 0.0]
+2025-04-06 22:57:15,316 - INFO - Robot target position: [0.6, 0.5]
+2025-04-06 22:57:15,317 - INFO - Translation and rotation set
+2025-04-06 22:57:15,317 - INFO - Sensors and LEDs initialized
+2025-04-06 22:57:15,367 - INFO - Connected to MQTT broker
+2025-04-06 22:57:15,368 - INFO - Simulation started
+2025-04-06 22:57:16,458 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-06 22:57:16,458 - INFO - Moved E: new position = (0.1, 0.0)
+2025-04-06 22:57:16,458 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-06 22:57:16,459 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.1, "y": 0.0}, "obstacles": ["S", "W"]}}}
+2025-04-06 22:57:17,511 - INFO - Sensor readings -> N: 100.72, E: 1000.00, S: 100.54, W: 1000.00
+2025-04-06 22:57:17,512 - INFO - Moved E: new position = (0.2, 0.0)
+2025-04-06 22:57:17,512 - INFO - Sensor readings -> N: 100.72, E: 1000.00, S: 100.54, W: 1000.00
+2025-04-06 22:57:17,512 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.2, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:18,615 - INFO - Sensor readings -> N: 99.10, E: 1000.00, S: 101.58, W: 1000.00
+2025-04-06 22:57:18,615 - INFO - Primary direction N blocked; using alternative E
+2025-04-06 22:57:18,616 - INFO - Moved E: new position = (0.3, 0.0)
+2025-04-06 22:57:18,616 - INFO - Sensor readings -> N: 99.10, E: 1000.00, S: 101.58, W: 1000.00
+2025-04-06 22:57:18,616 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.3, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:19,698 - INFO - Sensor readings -> N: 100.09, E: 1000.00, S: 100.08, W: 1000.00
+2025-04-06 22:57:19,698 - INFO - Primary direction N blocked; using alternative E
+2025-04-06 22:57:19,698 - INFO - Moved E: new position = (0.4, 0.0)
+2025-04-06 22:57:19,699 - INFO - Sensor readings -> N: 100.09, E: 1000.00, S: 100.08, W: 1000.00
+2025-04-06 22:57:19,699 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:20,757 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 99.99, W: 1000.00
+2025-04-06 22:57:20,758 - INFO - Moved N: new position = (0.4, 0.1)
+2025-04-06 22:57:20,758 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 99.99, W: 1000.00
+2025-04-06 22:57:20,758 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.1}, "obstacles": ["S"]}}}
+2025-04-06 22:57:21,824 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 99.95
+2025-04-06 22:57:21,824 - INFO - Moved N: new position = (0.4, 0.2)
+2025-04-06 22:57:21,824 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 99.95
+2025-04-06 22:57:21,825 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.2}, "obstacles": ["W"]}}}
+2025-04-06 22:57:22,897 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-06 22:57:22,897 - INFO - Moved N: new position = (0.4, 0.3)
+2025-04-06 22:57:22,897 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-06 22:57:22,897 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.3}, "obstacles": []}}}
+2025-04-06 22:57:23,968 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 100.00
+2025-04-06 22:57:23,968 - INFO - Moved N: new position = (0.4, 0.4)
+2025-04-06 22:57:23,968 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 100.00
+2025-04-06 22:57:23,968 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.4}, "obstacles": ["W"]}}}
+2025-04-06 22:57:25,024 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-06 22:57:25,024 - INFO - Moved E: new position = (0.5, 0.4)
+2025-04-06 22:57:25,025 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-06 22:57:25,025 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.5, "y": 0.4}, "obstacles": []}}}
+2025-04-06 22:57:26,098 - INFO - Target reached!
+2025-04-06 22:57:26,098 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:27,150 - INFO - Target reached!
+2025-04-06 22:57:27,150 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:28,199 - INFO - Target reached!
+2025-04-06 22:57:28,199 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:29,252 - INFO - Target reached!
+2025-04-06 22:57:29,253 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:30,311 - INFO - Target reached!
+2025-04-06 22:57:30,312 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:31,388 - INFO - Target reached!
+2025-04-06 22:57:31,388 - INFO - All LEDs turned off (target reached)
+2025-04-06 22:57:33,056 - INFO - Simulation ended
+2025-04-06 22:57:34,908 - INFO - Webots robot successfully initialized
+2025-04-06 22:57:34,908 - INFO - Robot start position: [0.0, 0.0, 0.0]
+2025-04-06 22:57:34,909 - INFO - Robot target position: [0.5, 0.5]
+2025-04-06 22:57:34,909 - INFO - Translation and rotation set
+2025-04-06 22:57:34,909 - INFO - Sensors and LEDs initialized
+2025-04-06 22:57:34,930 - INFO - Connected to MQTT broker
+2025-04-06 22:57:34,931 - INFO - Simulation started
+2025-04-06 22:57:35,990 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-06 22:57:35,990 - INFO - Moved E: new position = (0.1, 0.0)
+2025-04-06 22:57:35,990 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-06 22:57:35,991 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.1, "y": 0.0}, "obstacles": ["S", "W"]}}}
+2025-04-06 22:57:37,055 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:37,055 - INFO - Primary direction N blocked; using alternative E
+2025-04-06 22:57:37,055 - INFO - Moved E: new position = (0.2, 0.0)
+2025-04-06 22:57:37,056 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:37,056 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.2, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:38,125 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:38,126 - INFO - Primary direction N blocked; using alternative E
+2025-04-06 22:57:38,126 - INFO - Moved E: new position = (0.3, 0.0)
+2025-04-06 22:57:38,126 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:38,126 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.3, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:39,190 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:39,190 - INFO - Primary direction N blocked; using alternative E
+2025-04-06 22:57:39,190 - INFO - Moved E: new position = (0.4, 0.0)
+2025-04-06 22:57:39,190 - INFO - Sensor readings -> N: 100.00, E: 1000.00, S: 100.00, W: 1000.00
+2025-04-06 22:57:39,190 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-06 22:57:40,246 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 103.85, W: 1000.00
+2025-04-06 22:57:40,246 - INFO - Moved N: new position = (0.4, 0.1)
+2025-04-06 22:57:40,246 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 103.85, W: 1000.00
+2025-04-06 22:57:40,246 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.1}, "obstacles": ["S"]}}}
+2025-04-06 22:57:41,303 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 115.38
+2025-04-06 22:57:41,304 - INFO - Moved N: new position = (0.4, 0.2)
+2025-04-06 22:57:41,304 - INFO - Sensor readings -> N: 1000.00, E: 1000.00, S: 1000.00, W: 115.38
+2025-04-06 22:57:41,304 - INFO - Status update sent: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.2}, "obstacles": ["W"]}}}
+2025-04-06 22:58:26,511 - INFO - Simulation ended
