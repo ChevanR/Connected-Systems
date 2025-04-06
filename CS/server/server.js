@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mqtt = require('mqtt');
 const cors = require('cors');
@@ -42,6 +43,8 @@ app.get('/robots', (req, res) => {
 
 // REST Endpoint: Noodstop
 app.post('/emergency_stop', (req, res) => {
+  console.log("NOODSTOP commando ontvangen");
+  
   const command = {
     protocolVersion: 1.0,
     data: {
@@ -50,11 +53,13 @@ app.post('/emergency_stop', (req, res) => {
       msg: "EMERGENCY_STOP"
     }
   };
+  
   client.publish('robot/command', JSON.stringify(command), (err) => {
     if (err) {
       console.error("Fout bij verzenden noodstop:", err);
       res.status(500).json({ status: "Error sending emergency stop" });
     } else {
+      console.log("NOODSTOP commando succesvol verzonden via MQTT");
       res.send("Emergency stop command sent");
     }
   });
@@ -63,6 +68,8 @@ app.post('/emergency_stop', (req, res) => {
 // REST Endpoint: Move
 app.post('/move', (req, res) => {
   const { unitId, target } = req.body;
+  console.log(`Ontvangen move-commando voor ${unitId} naar (${target.x}, ${target.y})`);
+  
   const command = {
     protocolVersion: 1.0,
     data: {
@@ -74,17 +81,19 @@ app.post('/move', (req, res) => {
       }
     }
   };
+  
   client.publish('robot/command', JSON.stringify(command), (err) => {
     if (err) {
       console.error("Fout bij verzenden move-opdracht:", err);
       res.status(500).json({ status: "Error sending move command" });
     } else {
+      console.log(`MQTT commando verzonden: ${JSON.stringify(command)}`);
       res.json({ status: `Move command sent to ${unitId}` });
     }
   });
 });
 
-// Start de server op poort 5001 in plaats van 5000
+// Start de server op poort 5001
 const PORT = 5001;
 app.listen(PORT, () => {
   console.log(`Node.js server draait op poort ${PORT}`);

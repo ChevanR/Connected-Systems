@@ -19,7 +19,7 @@ verzamelt deze gegevens en biedt een REST API. Een web-dashboard (gedraaid via n
 
 - **Dashboard:**
   - Wordt geserveerd door een nginx-container
-  - Haalt via HTTP GET de robotdata op van de Node.js server (http://localhost:5000/robots)
+  - Haalt via HTTP GET de robotdata op van de Node.js server (http://localhost:5001/robots)
   - Tekent de robotpositie op een canvas
   - Laat de gebruiker opdrachten invoeren (Move en Noodstop)
 
@@ -37,7 +37,7 @@ verzamelt deze gegevens en biedt een REST API. Een web-dashboard (gedraaid via n
     ```
     docker-compose up --build
     ```
-4. De Node.js-server draait op: [http://localhost:5000](http://localhost:5000)  
+4. De Node.js-server draait op: [http://localhost:5001](http://localhost:5001)  
    Het dashboard draait op: [http://localhost:8080](http://localhost:8080)
    
 5. Pas je Webots controller aan om gebruik te maken van deze opzet.

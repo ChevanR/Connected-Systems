@@ -1,3 +1,4 @@
+// script.js
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext('2d');
 const gridSize = 10;
@@ -6,20 +7,30 @@ const cellSize = canvas.width / gridSize;
 // Object om de laatste robotposities bij te houden
 let robots = {};
 
-// Vaste obstakels definiëren zoals in het voorbeeld
+// Obstakels in het veld, gebaseerd op de webots simulatie
 const obstacles = [
-  {x: 1, y: 1}, {x: 3, y: 1}, {x: 5, y: 1}, {x: 7, y: 1},
-  {x: 1, y: 2}, {x: 3, y: 2}, {x: 5, y: 2}, {x: 7, y: 2},
-  {x: 1, y: 3}, {x: 3, y: 3}, {x: 5, y: 3}, {x: 7, y: 3},
-  {x: 1, y: 6}, {x: 3, y: 6}, {x: 5, y: 6}, {x: 7, y: 6},
-  {x: 1, y: 7}, {x: 3, y: 7}, {x: 5, y: 7}, {x: 7, y: 7},
-  {x: 1, y: 8}, {x: 3, y: 8}, {x: 5, y: 8}, {x: 7, y: 8}
+  // Verticale obstakels kolom 1, 3, 6, 8
+  {x: 1, y: 1}, {x: 1, y: 2}, {x: 1, y: 3},
+  {x: 3, y: 1}, {x: 3, y: 2}, {x: 3, y: 3},
+  {x: 6, y: 1}, {x: 6, y: 2}, {x: 6, y: 3},
+  {x: 8, y: 1}, {x: 8, y: 2}, {x: 8, y: 3},
+  
+  // Verticale obstakels kolom 1, 3, 6, 8 (onderste helft)
+  {x: 1, y: 6}, {x: 1, y: 7}, {x: 1, y: 8},
+  {x: 3, y: 6}, {x: 3, y: 7}, {x: 3, y: 8},
+  {x: 6, y: 6}, {x: 6, y: 7}, {x: 6, y: 8},
+  {x: 8, y: 6}, {x: 8, y: 7}, {x: 8, y: 8}
 ];
 
-// Functie om decimale Webots-coördinaten naar grid-posities te converteren
-function coordinateToGridBlock(coord) {
-  // Vermenigvuldig Webots-coördinaten (bijv. 0.1, 0.2) met 10 voor het grid (1, 2)
-  return Math.floor(coord * 10);
+// Functie om Webots-coördinaten naar GUI grid-posities te converteren
+function coordinateToGridBlock(x, y) {
+  // Converteer en wissel x/y om zodat het overeenkomt met Webots oriëntatie
+  return {
+    // y-coördinaat van Webots wordt x op de GUI
+    x: Math.floor(y * 10),
+    // x-coördinaat van Webots wordt y op de GUI
+    y: Math.floor(x * 10)
+  };
 }
 
 // Teken het grid
@@ -59,20 +70,25 @@ function drawRobots() {
   for (const id in robots) {
     const robot = robots[id];
     if (robot && robot.msg && robot.msg.location) {
-      // Converteer vloeiende coördinaten naar grid-posities
-      const x = coordinateToGridBlock(robot.msg.location.x);
-      const y = coordinateToGridBlock(robot.msg.location.y);
+      // Converteer coördinaten met omwisseling van x en y
+      const gridPos = coordinateToGridBlock(
+        robot.msg.location.x,
+        robot.msg.location.y
+      );
       
       // Kies kleur op basis van ID of standaard blauw
       const color = robotColors[id] || 'blue';
       
       ctx.fillStyle = color;
-      ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      ctx.fillRect(gridPos.x * cellSize, gridPos.y * cellSize, cellSize, cellSize);
       
       // Teken label voor de robot
       ctx.fillStyle = 'white';
       ctx.font = '12px Arial';
-      ctx.fillText(id, x * cellSize + 5, y * cellSize + 20);
+      ctx.fillText(id, gridPos.x * cellSize + 5, gridPos.y * cellSize + 20);
+      
+      // Debug logging voor robotpositie
+      console.log(`Robot ${id} op positie Webots(${robot.msg.location.x}, ${robot.msg.location.y}) -> GUI(${gridPos.x}, ${gridPos.y})`);
     }
   }
 }
@@ -106,8 +122,12 @@ function sendStop() {
     .then(response => response.text())
     .then(data => {
       console.log('Noodstop verzonden:', data);
+      alert('Noodstop commando verzonden!');
     })
-    .catch(err => console.error('Fout bij versturen noodstop:', err));
+    .catch(err => {
+      console.error('Fout bij versturen noodstop:', err);
+      alert('Fout bij versturen noodstop: ' + err.message);
+    });
 }
 
 // Verstuur een move-opdracht
@@ -117,15 +137,23 @@ function sendMove() {
   const parts = targetStr.split(',');
   
   if (parts.length !== 2) {
-    alert('Voer het doel in als x,y');
+    alert('Voer het doel in als x,y (bijv. 5,5)');
     return;
   }
   
-  // Converteer grid-positie naar decimale waarden voor de server (deel door 10)
-  const x = Number(parts[0].trim()) / 10;
-  const y = Number(parts[1].trim()) / 10;
+  // BELANGRIJKE AANPASSING: wissel x en y voor Webots
+  // GUI-coördinaten (door gebruiker ingevoerd) worden omgewisseld
+  // naar Webots-coördinaten (y,x)
+  const guiX = Number(parts[0].trim());
+  const guiY = Number(parts[1].trim());
   
-  const target = { x, y };
+  // Stuur naar Webots met juiste conversie (en deel door 10)
+  const webotsY = guiX / 10; // GUI X wordt Webots Y
+  const webotsX = guiY / 10; // GUI Y wordt Webots X
+  
+  const target = { x: webotsX, y: webotsY };
+  
+  console.log(`Move commando: GUI(${guiX},${guiY}) -> Webots(${webotsX},${webotsY})`);
   
   fetch('http://localhost:5001/move', {
     method: 'POST',
@@ -135,8 +163,12 @@ function sendMove() {
   .then(res => res.json())
   .then(data => {
     console.log('Move opdracht verzonden:', data);
+    alert(`Bot ${unitId} wordt verplaatst naar (${guiX},${guiY})`);
   })
-  .catch(err => console.error('Fout bij versturen move-opdracht:', err));
+  .catch(err => {
+    console.error('Fout bij versturen move-opdracht:', err);
+    alert('Fout bij versturen move-opdracht: ' + err.message);
+  });
 }
 
 // Voeg rij met opdrachten toe
@@ -146,7 +178,7 @@ function updateQueueDisplay() {
     queueContent.innerHTML = '';
     
     // Standaard units toevoegen, zelfs als niet in robots
-    const unitIds = ['unit0', 'unit1', 'unit2'];
+    const unitIds = ['bot1', 'unit0', 'unit1', 'unit2'];
     
     // Voeg ook alle gevonden robot IDs toe
     for (const id in robots) {
@@ -157,7 +189,15 @@ function updateQueueDisplay() {
     
     // Maak rij voor elke robot
     unitIds.forEach(id => {
-      queueContent.innerHTML += `<p>${id}: geen opdrachten</p>`;
+      const robot = robots[id];
+      let statusText = 'geen opdrachten';
+      
+      if (robot && robot.msg && robot.msg.location) {
+        const gridPos = coordinateToGridBlock(robot.msg.location.x, robot.msg.location.y);
+        statusText = `positie: (${gridPos.x},${gridPos.y})`;
+      }
+      
+      queueContent.innerHTML += `<p>${id}: ${statusText}</p>`;
     });
   }
 }
