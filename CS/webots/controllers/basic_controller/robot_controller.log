@@ -1,0 +1,53 @@
+2025-04-07 00:25:55,815 - INFO - Webots robot succesvol geïnitialiseerd
+2025-04-07 00:25:55,815 - INFO - Startpositie: [0.0, 0.0, 0.0]
+2025-04-07 00:25:55,816 - INFO - Doelpositie: [0.6, 0.6]
+2025-04-07 00:25:55,816 - INFO - Vertaling en rotatie ingesteld
+2025-04-07 00:25:55,816 - INFO - Sensores en LED's succesvol geïnitialiseerd
+2025-04-07 00:25:55,843 - INFO - Verbonden met MQTT-broker
+2025-04-07 00:25:55,843 - INFO - Simulatie gestart
+2025-04-07 00:25:56,951 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-07 00:25:56,951 - INFO - Beweeg E: nieuwe positie = (0.1, 0.0)
+2025-04-07 00:25:56,951 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 100.00, W: 100.00
+2025-04-07 00:25:56,951 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.1, "y": 0.0}, "obstacles": ["S", "W"]}}}
+2025-04-07 00:25:57,993 - INFO - Sensorwaarden -> N: 100.72, E: 1000.00, S: 100.54, W: 1000.00
+2025-04-07 00:25:57,993 - INFO - Primaire richting N geblokkeerd, alternatief E gekozen
+2025-04-07 00:25:57,993 - INFO - Beweeg E: nieuwe positie = (0.2, 0.0)
+2025-04-07 00:25:57,993 - INFO - Sensorwaarden -> N: 100.72, E: 1000.00, S: 100.54, W: 1000.00
+2025-04-07 00:25:57,994 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.2, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-07 00:25:59,004 - INFO - Sensorwaarden -> N: 99.11, E: 1000.00, S: 101.59, W: 1000.00
+2025-04-07 00:25:59,004 - INFO - Primaire richting N geblokkeerd, alternatief E gekozen
+2025-04-07 00:25:59,004 - INFO - Beweeg E: nieuwe positie = (0.3, 0.0)
+2025-04-07 00:25:59,004 - INFO - Sensorwaarden -> N: 99.11, E: 1000.00, S: 101.59, W: 1000.00
+2025-04-07 00:25:59,005 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.3, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-07 00:26:00,045 - INFO - Sensorwaarden -> N: 100.12, E: 1000.00, S: 100.07, W: 1000.00
+2025-04-07 00:26:00,045 - INFO - Primaire richting N geblokkeerd, alternatief E gekozen
+2025-04-07 00:26:00,045 - INFO - Beweeg E: nieuwe positie = (0.4, 0.0)
+2025-04-07 00:26:00,045 - INFO - Sensorwaarden -> N: 100.12, E: 1000.00, S: 100.07, W: 1000.00
+2025-04-07 00:26:00,046 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.0}, "obstacles": ["N", "S"]}}}
+2025-04-07 00:26:01,152 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 99.99, W: 1000.00
+2025-04-07 00:26:01,153 - INFO - Beweeg N: nieuwe positie = (0.4, 0.1)
+2025-04-07 00:26:01,153 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 99.99, W: 1000.00
+2025-04-07 00:26:01,154 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.1}, "obstacles": ["S"]}}}
+2025-04-07 00:26:02,126 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 99.96
+2025-04-07 00:26:02,126 - INFO - Beweeg N: nieuwe positie = (0.4, 0.2)
+2025-04-07 00:26:02,127 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 99.96
+2025-04-07 00:26:02,127 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.2}, "obstacles": ["W"]}}}
+2025-04-07 00:26:03,188 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:03,188 - INFO - Beweeg N: nieuwe positie = (0.4, 0.3)
+2025-04-07 00:26:03,188 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:03,189 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.3}, "obstacles": []}}}
+2025-04-07 00:26:04,255 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 100.00
+2025-04-07 00:26:04,255 - INFO - Beweeg N: nieuwe positie = (0.4, 0.4)
+2025-04-07 00:26:04,255 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 100.00
+2025-04-07 00:26:04,255 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.4, "y": 0.4}, "obstacles": ["W"]}}}
+2025-04-07 00:26:05,332 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:05,333 - INFO - Beweeg E: nieuwe positie = (0.5, 0.4)
+2025-04-07 00:26:05,333 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:05,333 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.5, "y": 0.4}, "obstacles": []}}}
+2025-04-07 00:26:06,400 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:06,400 - INFO - Beweeg N: nieuwe positie = (0.5, 0.5)
+2025-04-07 00:26:06,400 - INFO - Sensorwaarden -> N: 1000.00, E: 1000.00, S: 1000.00, W: 1000.00
+2025-04-07 00:26:06,400 - INFO - Statusbericht verzonden: {"protocolVersion": 1.0, "data": {"sender": "bot1", "target": "server", "msg": {"location": {"x": 0.5, "y": 0.5}, "obstacles": []}}}
+2025-04-07 00:26:07,487 - INFO - Doel bereikt!
+2025-04-07 00:26:07,487 - INFO - Alle LED's uitgeschakeld
+2025-04-07 00:26:09,648 - INFO - Simulatie beëindigd

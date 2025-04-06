@@ -5,5 +5,5 @@ sceneTreePerspectives: 000000ff00000001000000030000001e000000c0000000fa010000000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 0 "../CS/webots/controller/basic_controller/basic_controller.py"
+textFiles: 0 "controller/basic_controller/basic_controller.py"
 consoles: Console:All:All
