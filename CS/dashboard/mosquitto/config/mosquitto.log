@@ -1,0 +1,96 @@
+1743975020: mosquitto version 2.0.21 starting
+1743975020: Config loaded from /mosquitto/config/mosquitto.conf.
+1743975020: Opening ipv4 listen socket on port 1883.
+1743975020: Opening websockets listen socket on port 9001.
+1743975020: mosquitto version 2.0.21 running
+1743975033: mosquitto version 2.0.21 terminating
+1743975033: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1743975037: mosquitto version 2.0.21 starting
+1743975037: Config loaded from /mosquitto/config/mosquitto.conf.
+1743975037: Opening ipv4 listen socket on port 1883.
+1743975037: Opening websockets listen socket on port 9001.
+1743975037: mosquitto version 2.0.21 running
+1743975228: mosquitto version 2.0.21 terminating
+1743975228: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1743975233: mosquitto version 2.0.21 starting
+1743975233: Config loaded from /mosquitto/config/mosquitto.conf.
+1743975233: Opening ipv4 listen socket on port 1883.
+1743975233: Opening websockets listen socket on port 9001.
+1743975233: mosquitto version 2.0.21 running
+1743975330: mosquitto version 2.0.21 terminating
+1743975330: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1743975334: mosquitto version 2.0.21 starting
+1743975334: Config loaded from /mosquitto/config/mosquitto.conf.
+1743975334: Opening ipv4 listen socket on port 1883.
+1743975334: Opening websockets listen socket on port 9001.
+1743975334: mosquitto version 2.0.21 running
+1743975347: New connection from 192.168.65.1:40325 on port 1883.
+1743975347: Client <unknown> disconnected due to protocol error.
+1743975348: New connection from 192.168.65.1:33177 on port 1883.
+1743975348: Client <unknown> disconnected due to protocol error.
+1743975349: New connection from 192.168.65.1:33965 on port 1883.
+1743975349: Client <unknown> disconnected due to protocol error.
+1743975350: New connection from 192.168.65.1:44796 on port 1883.
+1743975350: Client <unknown> disconnected due to protocol error.
+1743975351: New connection from 192.168.65.1:61103 on port 1883.
+1743975351: Client <unknown> disconnected due to protocol error.
+1743975352: New connection from 192.168.65.1:47818 on port 1883.
+1743975352: Client <unknown> disconnected due to protocol error.
+1743975353: New connection from 192.168.65.1:42009 on port 1883.
+1743975353: Client <unknown> disconnected due to protocol error.
+1743975354: New connection from 192.168.65.1:61162 on port 1883.
+1743975354: Client <unknown> disconnected due to protocol error.
+1743975355: New connection from 192.168.65.1:29267 on port 1883.
+1743975355: Client <unknown> disconnected due to protocol error.
+1743975356: New connection from 192.168.65.1:23096 on port 1883.
+1743975356: Client <unknown> disconnected due to protocol error.
+1743975357: New connection from 192.168.65.1:56512 on port 1883.
+1743975357: Client <unknown> disconnected due to protocol error.
+1743975358: New connection from 192.168.65.1:41887 on port 1883.
+1743975358: Client <unknown> disconnected due to protocol error.
+1743975359: New connection from 192.168.65.1:65177 on port 1883.
+1743975359: Client <unknown> disconnected due to protocol error.
+1743975360: New connection from 192.168.65.1:38413 on port 1883.
+1743975360: Client <unknown> disconnected due to protocol error.
+1743975361: New connection from 192.168.65.1:43285 on port 1883.
+1743975361: Client <unknown> disconnected due to protocol error.
+1743975362: New connection from 192.168.65.1:50930 on port 1883.
+1743975362: Client <unknown> disconnected due to protocol error.
+1743975363: New connection from 192.168.65.1:62207 on port 1883.
+1743975363: Client <unknown> disconnected due to protocol error.
+1743975364: New connection from 192.168.65.1:20962 on port 1883.
+1743975364: Client <unknown> disconnected due to protocol error.
+1743975365: New connection from 192.168.65.1:49895 on port 1883.
+1743975365: Client <unknown> disconnected due to protocol error.
+1743975366: New connection from 192.168.65.1:25989 on port 1883.
+1743975366: Client <unknown> disconnected due to protocol error.
+1743975367: New connection from 192.168.65.1:22828 on port 1883.
+1743975367: Client <unknown> disconnected due to protocol error.
+1743975368: New connection from 192.168.65.1:43373 on port 1883.
+1743975368: Client <unknown> disconnected due to protocol error.
+1743975369: New connection from 192.168.65.1:54640 on port 1883.
+1743975369: Client <unknown> disconnected due to protocol error.
+1743975370: New connection from 192.168.65.1:32770 on port 1883.
+1743975370: Client <unknown> disconnected due to protocol error.
+1743975371: New connection from 192.168.65.1:62582 on port 1883.
+1743975371: Client <unknown> disconnected due to protocol error.
+1743975372: New connection from 192.168.65.1:26880 on port 1883.
+1743975372: Client <unknown> disconnected due to protocol error.
+1743975373: New connection from 192.168.65.1:35986 on port 1883.
+1743975373: Client <unknown> disconnected due to protocol error.
+1743975374: New connection from 192.168.65.1:43910 on port 1883.
+1743975374: Client <unknown> disconnected due to protocol error.
+1743975375: New connection from 192.168.65.1:24477 on port 1883.
+1743975375: Client <unknown> disconnected due to protocol error.
+1743975376: New connection from 192.168.65.1:57085 on port 1883.
+1743975376: Client <unknown> disconnected due to protocol error.
+1743975377: New connection from 192.168.65.1:53409 on port 1883.
+1743975377: Client <unknown> disconnected due to protocol error.
+1743975378: New connection from 192.168.65.1:40119 on port 1883.
+1743975378: Client <unknown> disconnected due to protocol error.
+1743975379: New connection from 192.168.65.1:38649 on port 1883.
+1743975379: Client <unknown> disconnected due to protocol error.
+1743975380: New connection from 192.168.65.1:33812 on port 1883.
+1743975380: Client <unknown> disconnected due to protocol error.
+1743975381: New connection from 192.168.65.1:45625 on port 1883.
+1743975381: Client <unknown> disconnected due to protocol error.

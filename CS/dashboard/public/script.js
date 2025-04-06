@@ -49,7 +49,7 @@ function updateField() {
 // Poll the server every 1 second for latest robot data
 async function fetchRobots() {
   try {
-    const res = await fetch('http://localhost:5000/robots');
+    const res = await fetch('http://localhost:1883/robots');
     if (res.ok) {
       robots = await res.json();
       updateField();
@@ -63,7 +63,7 @@ async function fetchRobots() {
 
 // Send emergency stop command to server
 function sendStop() {
-  fetch('http://localhost:5000/emergency_stop', { method: 'POST' })
+  fetch('http://localhost:1883/emergency_stop', { method: 'POST' })
     .then(response => response.text())
     .then(data => alert(data))
     .catch(err => console.error('Error sending stop command: ', err));
@@ -81,7 +81,7 @@ function sendMove() {
   const x = Number(parts[0].trim());
   const y = Number(parts[1].trim());
   const target = { x, y };
-  fetch('http://localhost:5000/move', {
+  fetch('http://localhost:1883/move', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ unitId, target })

@@ -35,3 +35,5 @@
 1743970606: Opening websockets listen socket on port 9001.
 1743970606: mosquitto version 2.0.21 running
 1743972407: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1743973426: mosquitto version 2.0.21 terminating
+1743973426: Saving in-memory database to /mosquitto/data//mosquitto.db.
