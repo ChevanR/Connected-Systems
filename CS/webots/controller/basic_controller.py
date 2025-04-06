@@ -1,11 +1,10 @@
-
+#!/usr/bin/env python3
 import paho.mqtt.client as mqtt
 import json
 import time
 import random
 import logging
 import sys
-
 from controller import Supervisor
 
 # --- Logging setup ---
@@ -21,22 +20,21 @@ try:
     robot = Supervisor()
     supervisorNode = robot.getSelf()
     timestep = int(robot.getBasicTimeStep())
-    logger.info("Webots robot successfully initialized")
+    logger.info("Webots robot succesvol geïnitialiseerd")
 except Exception as e:
-    logger.error("Error initializing Webots robot: %s", e)
+    logger.error("Fout bij initialisatie Webots robot: %s", e)
     sys.exit(1)
 
-# --- Configuration parameters ---
-STEP_SIZE = 0.1             # Movement increment
-OBSTACLE_THRESHOLD = 450    # Sensor threshold for obstacles
+STEP_SIZE = 0.1  # Beweegstap
+OBSTACLE_THRESHOLD = 450
 MIN_BOUND, MAX_BOUND = 0.0, 0.9
-START_POS = [0.0, 0.0, 0.0]   # Starting coordinates (x,y,z)
+START_POS = [0.0, 0.0, 0.0]
 TARGET_POS = [
     round(random.uniform(0.3, 0.7), 1),
     round(random.uniform(0.3, 0.7), 1)
 ]
-logger.info("Robot start position: %s", START_POS)
-logger.info("Robot target position: %s", TARGET_POS)
+logger.info("Startpositie: %s", START_POS)
+logger.info("Doelpositie: %s", TARGET_POS)
 
 # --- Set translation and rotation ---
 try:
@@ -44,13 +42,13 @@ try:
     rot = supervisorNode.getField("rotation")
     trans.setSFVec3f(START_POS)
     rot.setSFRotation([0, 0, 1, 0])
-    logger.info("Translation and rotation set")
+    logger.info("Vertaling en rotatie ingesteld")
 except Exception as e:
-    logger.error("Error setting position/rotation: %s", e)
+    logger.error("Fout bij instellen positie/rotatie: %s", e)
     sys.exit(1)
 
 # --- MQTT settings ---
-BROKER = "test.mosquitto.org"  # Public MQTT broker
+BROKER = "test.mosquitto.org"  # Publieke broker
 PORT = 1883
 TOPIC_PUBLISH = "robot/status"
 
@@ -69,9 +67,9 @@ try:
     led_E = robot.getDevice("BLUE")
     led_S = robot.getDevice("YELLOW")
     led_W = robot.getDevice("GREEN")
-    logger.info("Sensors and LEDs initialized")
+    logger.info("Sensores en LED's succesvol geïnitialiseerd")
 except Exception as e:
-    logger.error("Error initializing sensors/LEDs: %s", e)
+    logger.error("Fout bij initialisatie sensoren/LED's: %s", e)
     sys.exit(1)
 
 mqtt_connected = False
@@ -79,16 +77,15 @@ try:
     client = mqtt.Client(client_id="WebotsRobot", protocol=mqtt.MQTTv311)
     client.connect(BROKER, PORT)
     mqtt_connected = True
-    logger.info("Connected to MQTT broker")
+    logger.info("Verbonden met MQTT-broker")
 except Exception as e:
-    logger.error("Error connecting to MQTT broker: %s", e)
+    logger.error("Fout bij verbinden met MQTT-broker: %s", e)
 
 if mqtt_connected:
     client.loop_start()
 
 last_sent_position = None
 
-# --- Function: Detect obstacles by reading sensor values ---
 def detect_obstacles():
     try:
         obstacles = []
@@ -104,30 +101,28 @@ def detect_obstacles():
             obstacles.append("S")
         if dW < OBSTACLE_THRESHOLD:
             obstacles.append("W")
-        logger.info("Sensor readings -> N: %.2f, E: %.2f, S: %.2f, W: %.2f", dN, dE, dS, dW)
+        logger.info("Sensorwaarden -> N: %.2f, E: %.2f, S: %.2f, W: %.2f", dN, dE, dS, dW)
         return obstacles
     except Exception as e:
-        logger.error("Error during obstacle detection: %s", e)
+        logger.error("Fout bij obstakel detectie: %s", e)
         return []
 
-# --- Function: Turn off all LEDs (indicating target reached) ---
 def turn_leds_off():
     try:
         led_N.set(0)
         led_E.set(0)
         led_S.set(0)
         led_W.set(0)
-        logger.info("All LEDs turned off (target reached)")
+        logger.info("Alle LED's uitgeschakeld")
     except Exception as e:
-        logger.error("Error turning off LEDs: %s", e)
+        logger.error("Fout bij uitschakelen LED's: %s", e)
 
-# --- Function: Send status (position and obstacles) via MQTT ---
 def send_status():
     global last_sent_position
     if not mqtt_connected:
         return
     try:
-        pos = trans.getSFVec3f()  # Returns a list: [x, y, z]
+        pos = trans.getSFVec3f()  # [x, y, z]
         x_pos = round(pos[0], 1)
         y_pos = round(pos[1], 1)
         current_pos = (x_pos, y_pos)
@@ -145,13 +140,12 @@ def send_status():
                 }
             }
         }
-        payload = json.dumps(status_message)
-        client.publish(TOPIC_PUBLISH, payload)
-        logger.info("Status update sent: %s", payload)
+        letPayload = json.dumps(status_message)
+        client.publish(TOPIC_PUBLISH, letPayload)
+        logger.info("Statusbericht verzonden: %s", letPayload)
     except Exception as e:
-        logger.error("Error sending status update: %s", e)
+        logger.error("Fout bij verzenden status: %s", e)
 
-# --- Function: Update position field ---
 def set_position(x, y):
     try:
         new_x = round(x, 1)
@@ -163,10 +157,9 @@ def set_position(x, y):
         rot.setSFRotation([0, 0, 1, 0])
         return True
     except Exception as e:
-        logger.error("Error setting position: %s", e)
+        logger.error("Fout bij instellen positie: %s", e)
         return False
 
-# --- Function: Choose alternative direction if primary is blocked ---
 def choose_alternative_direction(primary, obstacles):
     if primary in ["E", "W"]:
         if "N" not in obstacles:
@@ -180,7 +173,6 @@ def choose_alternative_direction(primary, obstacles):
             return "W"
     return None
 
-# --- Function: Move one step toward target with obstacle avoidance ---
 def move_to_target():
     try:
         pos = trans.getSFVec3f()
@@ -188,24 +180,21 @@ def move_to_target():
         current_y = round(pos[1], 1)
         target_x, target_y = TARGET_POS
         if abs(current_x - target_x) < STEP_SIZE and abs(current_y - target_y) < STEP_SIZE:
-            logger.info("Target reached!")
+            logger.info("Doel bereikt!")
             turn_leds_off()
             return
         dx = target_x - current_x
         dy = target_y - current_y
-        if abs(dx) >= abs(dy):
-            primary = "E" if dx > 0 else "W"
-        else:
-            primary = "N" if dy > 0 else "S"
+        primary = "E" if abs(dx) >= abs(dy) and dx > 0 else "W" if abs(dx) >= abs(dy) else "N" if dy > 0 else "S"
         obstacles = detect_obstacles()
         chosen_direction = primary
         if primary in obstacles:
             alt = choose_alternative_direction(primary, obstacles)
             if alt:
-                logger.info("Primary direction %s blocked; using alternative %s", primary, alt)
+                logger.info("Primaire richting %s geblokkeerd, alternatief %s gekozen", primary, alt)
                 chosen_direction = alt
             else:
-                logger.warning("No alternative direction available; no movement")
+                logger.warning("Geen vrije richting beschikbaar; geen beweging")
                 return
         new_x, new_y = current_x, current_y
         if chosen_direction == "E":
@@ -221,27 +210,27 @@ def move_to_target():
             led_E.set(1 if chosen_direction == "E" else 0)
             led_S.set(1 if chosen_direction == "S" else 0)
             led_W.set(1 if chosen_direction == "W" else 0)
-            logger.info("Moved %s: new position = (%.1f, %.1f)", chosen_direction, new_x, new_y)
+            logger.info("Beweeg %s: nieuwe positie = (%.1f, %.1f)", chosen_direction, new_x, new_y)
     except Exception as e:
-        logger.error("Error moving toward target: %s", e)
+        logger.error("Fout tijdens bewegen: %s", e);
 
-logger.info("Simulation started")
+logger.info("Simulatie gestart");
 last_movement_time = time.time()
 
 try:
     while robot.step(timestep) != -1:
         current_time = time.time()
-        if current_time - last_movement_time >= 1.0:
-            move_to_target()
-            send_status()
-            last_movement_time = current_time
-        time.sleep(0.1)
+        if (current_time - last_movement_time >= 1.0):
+            move_to_target();
+            send_status();
+            last_movement_time = current_time;
+        time.sleep(0.1);
 except KeyboardInterrupt:
-    logger.info("Simulation manually interrupted")
+    logger.info("Simulatie handmatig gestopt");
 except Exception as e:
-    logger.critical("Unexpected error: %s", e)
+    logger.critical("Onverwachte fout: %s", e);
 finally:
-    if mqtt_connected:
-        client.loop_stop()
-        client.disconnect()
-    logger.info("Simulation ended")
+    if (mqtt_connected):
+        client.loop_stop();
+        client.disconnect();
+    logger.info("Simulatie beëindigd");

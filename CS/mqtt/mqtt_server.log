@@ -1,4 +1,0 @@
-2025-04-06 21:31:35,279 - CRITICAL - Kritieke fout bij starten MQTT-client: [Errno 11001] getaddrinfo failed
-2025-04-06 21:32:41,337 - CRITICAL - Kritieke fout bij starten MQTT-client: [Errno 11001] getaddrinfo failed
-2025-04-06 21:33:54,276 - CRITICAL - Kritieke fout bij starten MQTT-client: [Errno 11001] getaddrinfo failed
-2025-04-06 21:34:47,790 - CRITICAL - Kritieke fout bij starten MQTT-client: [Errno 11001] getaddrinfo failed

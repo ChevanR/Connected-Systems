@@ -9,7 +9,7 @@
 <body>
   <header>
     <h1>Connected Systems Dashboard</h1>
-    <p>Monitor live robot positions and send commands</p>
+    <p>Bekijk live robotposities en verstuur opdrachten</p>
   </header>
 
   <main>
@@ -18,18 +18,18 @@
     </section>
     <section id="controls">
       <div class="control-box">
-        <h3>Move Unit</h3>
+        <h3>Beweeg unit</h3>
         <label>Unit ID:
           <input type="text" id="unitId" value="bot1" />
         </label>
-        <label>Target (x,y):
-          <input type="text" id="target" placeholder="e.g., 5,5" />
+        <label>Doel (x,y):
+          <input type="text" id="target" placeholder="bijv. 5,5" />
         </label>
-        <button onclick="sendMove()">Move</button>
+        <button onclick="sendMove()">Verstuur Move</button>
       </div>
       <div class="control-box">
-        <h3>Emergency Stop</h3>
-        <button class="stop-btn" onclick="sendStop()">STOP</button>
+        <h3>Noodstop</h3>
+        <button class="stop-btn" onclick="sendStop()">NOODSTOP</button>
       </div>
     </section>
   </main>
