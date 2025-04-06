@@ -85,7 +85,7 @@ app.post('/move', (req, res) => {
 });
 
 // Start de server op poort 5000
-const PORT = 5000;
+const PORT = 5050;
 app.listen(PORT, () => {
   console.log(`Node.js server draait op poort ${PORT}`);
 });
