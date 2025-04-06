@@ -13,25 +13,35 @@
   </header>
 
   <main>
-    <section id="display">
-      <canvas id="field" width="400" height="400"></canvas>
-    </section>
-    <section id="controls">
-      <div class="control-box">
-        <h3>Beweeg unit</h3>
-        <label>Unit ID:
-          <input type="text" id="unitId" value="bot1" />
-        </label>
-        <label>Doel (x,y):
-          <input type="text" id="target" placeholder="bijv. 5,5" />
-        </label>
-        <button onclick="sendMove()">Verstuur Move</button>
-      </div>
-      <div class="control-box">
-        <h3>Noodstop</h3>
-        <button class="stop-btn" onclick="sendStop()">NOODSTOP</button>
-      </div>
-    </section>
+    <div class="container">
+      <section id="display">
+        <canvas id="field" width="400" height="400"></canvas>
+      </section>
+      
+      <section id="controls">
+        <div class="control-box">
+          <h3>Beweeg Unit</h3>
+          <label>Unit ID:
+            <input type="text" id="unitId" value="bot1" />
+          </label>
+          <label>Naar (x,y):
+            <input type="text" id="target" placeholder="bijv. 5,5" />
+          </label>
+          <button onclick="sendMove()">Verplaats</button>
+        </div>
+        
+        <div id="queues" class="control-box">
+          <h3>Queues</h3>
+          <div id="queue-content">
+            <!-- Wordt dynamisch gevuld -->
+          </div>
+        </div>
+        
+        <div class="control-box">
+          <button class="stop-btn" onclick="sendStop()">NOODSTOP</button>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>

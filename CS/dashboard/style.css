@@ -33,8 +33,14 @@ main {
   padding: 20px;
 }
 
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
 #display {
-  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -47,9 +53,9 @@ canvas {
 /* Controls */
 #controls {
   display: flex;
-  gap: 40px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 300px;
 }
 
 .control-box {
@@ -58,13 +64,14 @@ canvas {
   border: 1px solid #ddd;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   border-radius: 8px;
-  width: 250px;
-  text-align: center;
+  width: 100%;
 }
 
 .control-box h3 {
   margin-top: 0;
   color: #145da0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
 }
 
 .control-box label {
@@ -76,7 +83,7 @@ canvas {
 
 .control-box input[type="text"] {
   width: 90%;
-  padding: 5px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -91,6 +98,7 @@ button {
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 100%;
 }
 
 button:hover {
@@ -99,10 +107,17 @@ button:hover {
 
 .stop-btn {
   background-color: #e74c3c;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 15px;
 }
 
 .stop-btn:hover {
-  background-color: #c0392f;
+  background-color: #c0392b;
+}
+
+#queue-content {
+  line-height: 1.6;
 }
 
 /* Footer */
