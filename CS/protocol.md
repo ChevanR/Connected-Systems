@@ -14,8 +14,8 @@ Alle berichten worden verstuurd in JSON-formaat. De basisstructuur is als volgt:
 "msg": {
 "location": {"x": X_COORDINAAT, "y": Y_COORDINAAT},
 "obstacles": ["L", "R", "N", "S"],
-"command": "MOVE", // alleen in commando-berichten
-"target": {"x": X, "y": Y} // alleen in commando-berichten
+"command": "MOVE", // alleen in command-berichten
+"target": {"x": X, "y": Y} // alleen in command-berichten
 }
 }
 }

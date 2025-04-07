@@ -15,12 +15,6 @@ body {
   font-size: 14px;
 }
 
-/* Tekstopmaak - geen caps aan begin */
-h1, h2, h3, button, label, .panel-header {
-  text-transform: lowercase;
-  font-weight: 500;
-}
-
 /* Header */
 header {
   background: #1a2233;
@@ -156,6 +150,7 @@ button {
   padding: 15px 30px;
   margin: 10px 0;
   width: 100%;
+  font-weight: bold;
 }
 
 .stop-btn:hover,

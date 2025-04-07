@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>connected systems dashboard</title>
+  <title>Connected Systems Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>connected systems dashboard</h1>
+    <h1>Connected Systems Dashboard</h1>
     <div class="status-bar">
       <div class="status-item">
-        <span class="label">systeem status:</span>
-        <span class="value" id="system-status">actief</span>
+        <span class="label">Systeem status:</span>
+        <span class="value" id="system-status">Actief</span>
       </div>
       <div class="status-item">
-        <span class="label">noodstop:</span>
-        <span class="value" id="stop-status">inactief</span>
+        <span class="label">Noodstop:</span>
+        <span class="value" id="stop-status">Inactief</span>
       </div>
       <div class="status-item">
-        <span class="label">laatste actie:</span>
+        <span class="label">Laatste actie:</span>
         <span class="value" id="last-action"></span>
       </div>
     </div>
@@ -30,7 +30,7 @@
       <!-- Visualisatie paneel -->
       <section class="panel">
         <div class="panel-header">
-          <h2>robot visualisatie</h2>
+          <h2>Robot Mapping</h2>
         </div>
         <div class="panel-content">
           <canvas id="field" width="400" height="400"></canvas>
@@ -42,11 +42,11 @@
         <!-- Robot besturing -->
         <div class="panel">
           <div class="panel-header">
-            <h2>robot besturing</h2>
+            <h2>Robot Controls</h2>
           </div>
           <div class="panel-content">
             <div class="control-group">
-              <label for="unitId">robot id</label>
+              <label for="unitId">Robot ID</label>
               <select id="unitId">
                 <option value="bot1">bot1</option>
                 <option value="bot2">bot2</option>
@@ -55,12 +55,12 @@
             </div>
             
             <div class="control-group">
-              <label for="target">doelpositie (x,y)</label>
+              <label for="target">Goal (x,y)</label>
               <input type="text" id="target" placeholder="5,5" />
             </div>
             
             <div class="action-buttons">
-              <button class="action-btn" onclick="sendMove()">verstuur</button>
+              <button class="action-btn" onclick="sendMove()">Send</button>
             </div>
           </div>
         </div>
@@ -68,18 +68,18 @@
         <!-- Noodstop -->
         <div class="panel">
           <div class="panel-header">
-            <h2>veiligheidscontrole</h2>
+            <h2>Security</h2>
           </div>
           <div class="panel-content centered">
-            <button class="stop-btn" onclick="sendStop()">noodstop</button>
-            <button class="resume-btn" onclick="sendResume()">hervatten</button>
+            <button class="stop-btn" onclick="sendStop()">EMERGENCY</button>
+            <button class="resume-btn" onclick="sendResume()">Resume</button>
           </div>
         </div>
         
         <!-- Robot status -->
         <div class="panel">
           <div class="panel-header">
-            <h2>robot status</h2>
+            <h2>Robot status</h2>
           </div>
           <div class="panel-content">
             <div id="queue-content">
@@ -92,7 +92,7 @@
   </main>
   
   <footer>
-    <span>connected systems project • hogeschool rotterdam</span>
+    <span>Connected Systems Project • Hogeschool Rotterdam</span>
   </footer>
   
   <script src="script.js"></script>
