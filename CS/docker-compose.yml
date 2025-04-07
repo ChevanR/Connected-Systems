@@ -5,7 +5,7 @@ services:
       context: ./server
       dockerfile: Dockerfile.server
     ports:
-      - "5001:5001"  # Veranderd van 5000:5000 naar 5001:5001
+      - "5001:5001"
     restart: always
   dashboard:
     build:

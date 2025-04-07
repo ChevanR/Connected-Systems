@@ -1,52 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Connected Systems Dashboard</title>
+  <title>connected systems dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Connected Systems Dashboard</h1>
-    <p>Bekijk live robotposities en verstuur opdrachten</p>
+    <h1>connected systems dashboard</h1>
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="label">systeem status:</span>
+        <span class="value" id="system-status">actief</span>
+      </div>
+      <div class="status-item">
+        <span class="label">noodstop:</span>
+        <span class="value" id="stop-status">inactief</span>
+      </div>
+      <div class="status-item">
+        <span class="label">laatste actie:</span>
+        <span class="value" id="last-action"></span>
+      </div>
+    </div>
   </header>
-
+  
   <main>
-    <div class="container">
-      <section id="display">
-        <canvas id="field" width="400" height="400"></canvas>
+    <div class="dashboard-container">
+      <!-- Visualisatie paneel -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2>robot visualisatie</h2>
+        </div>
+        <div class="panel-content">
+          <canvas id="field" width="400" height="400"></canvas>
+        </div>
       </section>
       
-      <section id="controls">
-        <div class="control-box">
-          <h3>Beweeg Unit</h3>
-          <label>Unit ID:
-            <input type="text" id="unitId" value="bot1" />
-          </label>
-          <label>Naar (x,y):
-            <input type="text" id="target" placeholder="bijv. 5,5" />
-          </label>
-          <button onclick="sendMove()">Verplaats</button>
-        </div>
-        
-        <div id="queues" class="control-box">
-          <h3>Queues</h3>
-          <div id="queue-content">
-            <!-- Wordt dynamisch gevuld -->
+      <!-- Controls -->
+      <section class="controls-section">
+        <!-- Robot besturing -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>robot besturing</h2>
+          </div>
+          <div class="panel-content">
+            <div class="control-group">
+              <label for="unitId">robot id</label>
+              <select id="unitId">
+                <option value="bot1">bot1</option>
+                <option value="bot2">bot2</option>
+                <option value="bot3">bot3</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label for="target">doelpositie (x,y)</label>
+              <input type="text" id="target" placeholder="5,5" />
+            </div>
+            
+            <div class="action-buttons">
+              <button class="action-btn" onclick="sendMove()">verstuur</button>
+            </div>
           </div>
         </div>
         
-        <div class="control-box">
-          <button class="stop-btn" onclick="sendStop()">NOODSTOP</button>
+        <!-- Noodstop -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>veiligheidscontrole</h2>
+          </div>
+          <div class="panel-content centered">
+            <button class="stop-btn" onclick="sendStop()">noodstop</button>
+            <button class="resume-btn" onclick="sendResume()">hervatten</button>
+          </div>
+        </div>
+        
+        <!-- Robot status -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>robot status</h2>
+          </div>
+          <div class="panel-content">
+            <div id="queue-content">
+              <!-- Dynamisch gevuld -->
+            </div>
+          </div>
         </div>
       </section>
     </div>
   </main>
-
+  
   <footer>
-    <small>&copy; 2025 Connected Systems Project</small>
+    <span>connected systems project • hogeschool rotterdam</span>
   </footer>
+  
   <script src="script.js"></script>
 </body>
 </html>

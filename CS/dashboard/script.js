@@ -1,13 +1,33 @@
-// script.js
+/**
+ * Connected Systems Dashboard - script.js
+ * 
+ * Dit script:
+ * - Haalt robotdata op van de server
+ * - Tekent het grid en robots op canvas
+ * - Verstuurt commando's (move, noodstop)
+ * - Valideert invoer en output
+ */
+
+// Canvas en context
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext('2d');
 const gridSize = 10;
 const cellSize = canvas.width / gridSize;
 
-// Object om de laatste robotposities bij te houden
-let robots = {};
+// Status elementen
+const systemStatusEl = document.getElementById('system-status');
+const stopStatusEl = document.getElementById('stop-status');
+const lastActionEl = document.getElementById('last-action');
 
-// Obstakels in het veld, gebaseerd op de webots simulatie
+// API endpoint basis
+const API_BASE = 'http://localhost:5001';
+
+// Object om robotdata bij te houden
+let robots = {};
+// Noodstop status
+let emergencyActive = false;
+
+// Obstakels in het veld
 const obstacles = [
   // Verticale obstakels kolom 1, 3, 6, 8
   {x: 1, y: 1}, {x: 1, y: 2}, {x: 1, y: 3},
@@ -22,23 +42,87 @@ const obstacles = [
   {x: 8, y: 6}, {x: 8, y: 7}, {x: 8, y: 8}
 ];
 
-// Functie om Webots-coördinaten naar GUI grid-posities te converteren
+/**
+ * Logging naar console met timestamp
+ */
+function log(level, message, data = null) {
+  const timestamp = new Date().toISOString();
+  const logMessage = `${timestamp} - ${level}: ${message}`;
+  
+  if (data) {
+    console.log(logMessage, data);
+  } else {
+    console.log(logMessage);
+  }
+}
+
+/**
+ * Converteer Webots-coördinaten naar GUI grid-posities
+ * 
+ * @param {number} x - Webots x-coördinaat (0.0-0.9)
+ * @param {number} y - Webots y-coördinaat (0.0-0.9)
+ * @returns {Object} - GUI x,y grid-positie (0-9)
+ */
 function coordinateToGridBlock(x, y) {
-  // Converteer en wissel x/y om zodat het overeenkomt met Webots oriëntatie
   return {
-    // y-coördinaat van Webots wordt x op de GUI
+    // Webots y wordt GUI x
     x: Math.floor(y * 10),
-    // x-coördinaat van Webots wordt y op de GUI
+    // Webots x wordt GUI y
     y: Math.floor(x * 10)
   };
 }
 
-// Teken het grid
+/**
+ * Controleer of een grid-positie een obstakel bevat
+ * 
+ * @param {number} x - Grid x-positie (0-9)
+ * @param {number} y - Grid y-positie (0-9)
+ * @returns {boolean} - true als er geen obstakel is
+ */
+function validateGridPosition(x, y) {
+  // Binnen grid grenzen
+  if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
+    return false;
+  }
+  
+  // Controleer obstakels
+  for (const obs of obstacles) {
+    if (obs.x === x && obs.y === y) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/**
+ * Valideer en corrigeer coördinaten
+ * 
+ * @param {number} x - Grid x-coördinaat
+ * @param {number} y - Grid y-coördinaat
+ * @returns {Object} - gevalideerde x,y coördinaten
+ */
+function validateCoordinates(x, y) {
+  // Maak positief
+  x = Math.abs(x);
+  y = Math.abs(y);
+  
+  // Houd binnen grid
+  x = Math.min(Math.max(Math.round(x), 0), gridSize-1);
+  y = Math.min(Math.max(Math.round(y), 0), gridSize-1);
+  
+  return {x, y};
+}
+
+/**
+ * Teken het grid en obstakels
+ */
 function drawGrid() {
+  // Wis canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = '#ccc';
   
   // Teken gridlijnen
+  ctx.strokeStyle = '#ccc';
   for (let i = 0; i <= gridSize; i++) {
     ctx.beginPath();
     ctx.moveTo(i * cellSize, 0);
@@ -58,80 +142,175 @@ function drawGrid() {
   });
 }
 
-// Teken robots
+/**
+ * Teken de robots op het grid
+ */
 function drawRobots() {
+  // Kleur per robot
   const robotColors = {
     'bot1': 'blue',
-    'unit0': 'orange',
-    'unit1': 'green',
-    'unit2': 'red'
+    'bot2': 'green',
+    'bot3': 'red'
   };
 
+  // Loop door alle robots
   for (const id in robots) {
     const robot = robots[id];
     if (robot && robot.msg && robot.msg.location) {
-      // Converteer coördinaten met omwisseling van x en y
-      const gridPos = coordinateToGridBlock(
-        robot.msg.location.x,
-        robot.msg.location.y
-      );
+      // Haal coördinaten
+      const { x, y } = robot.msg.location;
       
-      // Kies kleur op basis van ID of standaard blauw
+      // Converteer coördinaten voor grid
+      const gridPos = coordinateToGridBlock(x, y);
+      
+      // Teken robot als gekleurd blokje
       const color = robotColors[id] || 'blue';
-      
       ctx.fillStyle = color;
       ctx.fillRect(gridPos.x * cellSize, gridPos.y * cellSize, cellSize, cellSize);
       
-      // Teken label voor de robot
+      // Teken ID als label
       ctx.fillStyle = 'white';
       ctx.font = '12px Arial';
       ctx.fillText(id, gridPos.x * cellSize + 5, gridPos.y * cellSize + 20);
       
-      // Debug logging voor robotpositie
-      console.log(`Robot ${id} op positie Webots(${robot.msg.location.x}, ${robot.msg.location.y}) -> GUI(${gridPos.x}, ${gridPos.y})`);
+      // Log transformatie voor debugging
+      log('DEBUG', `Robot ${id}: Webots(${x}, ${y}) -> GUI(${gridPos.x}, ${gridPos.y})`);
     }
   }
 }
 
-// Update het hele canvas
+/**
+ * Update het volledige speelveld
+ */
 function updateField() {
   drawGrid();
   drawRobots();
 }
 
-// Haal robotdata op
+/**
+ * Haal robotdata op van server
+ */
 async function fetchRobots() {
   try {
-    const res = await fetch('http://localhost:5001/robots');
+    const res = await fetch(`${API_BASE}/robots`);
     if (res.ok) {
-      robots = await res.json();
-      console.log('Ontvangen robotdata:', robots);
+      const data = await res.json();
+      log('INFO', 'Ontvangen robotdata:', data);
+      
+      // Update robots object met nieuwe data
+      robots = data;
+      
+      // Update het speelveld
       updateField();
+      
+      // Update robot statussen
       updateQueueDisplay();
     } else {
-      console.error('Fout bij ophalen robotdata:', res.statusText);
+      log('ERROR', `Fout bij ophalen robotdata: ${res.status} ${res.statusText}`);
+      systemStatusEl.textContent = "verbindingsfout";
+      systemStatusEl.style.color = "#ff5757";
     }
   } catch (err) {
-    console.error('Fetch error:', err);
+    log('ERROR', 'Fetch error:', err);
+    systemStatusEl.textContent = "offline";
+    systemStatusEl.style.color = "#ff5757";
   }
 }
 
-// Verstuur een noodstop-opdracht
-function sendStop() {
-  fetch('http://localhost:5001/emergency_stop', { method: 'POST' })
-    .then(response => response.text())
-    .then(data => {
-      console.log('Noodstop verzonden:', data);
-      alert('Noodstop commando verzonden!');
-    })
-    .catch(err => {
-      console.error('Fout bij versturen noodstop:', err);
-      alert('Fout bij versturen noodstop: ' + err.message);
-    });
+/**
+ * Haal noodstop status op van server
+ */
+async function fetchEmergencyStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/emergency_status`);
+    if (res.ok) {
+      const data = await res.json();
+      emergencyActive = data.active;
+      
+      // Update UI
+      if (emergencyActive) {
+        stopStatusEl.textContent = "ACTIEF";
+        stopStatusEl.classList.add('active');
+        document.querySelector('.stop-btn').classList.add('active-stop');
+      } else {
+        stopStatusEl.textContent = "inactief";
+        stopStatusEl.classList.remove('active');
+        document.querySelector('.stop-btn').classList.remove('active-stop');
+      }
+    }
+  } catch (err) {
+    log('ERROR', 'Fout bij ophalen noodstop status:', err);
+  }
 }
 
-// Verstuur een move-opdracht
+/**
+ * Verstuur noodstop commando
+ */
+function sendStop() {
+  // Visuele feedback
+  document.querySelector('.stop-btn').classList.add('active-stop');
+  
+  fetch(`${API_BASE}/emergency_stop`, { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(response => response.json())
+  .then(data => {
+    log('INFO', 'Noodstop verzonden, resultaat:', data);
+    
+    // Update status
+    stopStatusEl.textContent = "ACTIEF";
+    stopStatusEl.classList.add('active');
+    emergencyActive = true;
+    
+    // Update actie log
+    updateLastAction("noodstop geactiveerd");
+  })
+  .catch(err => {
+    log('ERROR', 'Fout bij versturen noodstop:', err);
+    alert('Fout bij versturen noodstop: ' + err.message);
+  });
+}
+
+/**
+ * Hervat na noodstop
+ */
+function sendResume() {
+  // Visuele feedback
+  document.querySelector('.stop-btn').classList.remove('active-stop');
+  
+  fetch(`${API_BASE}/resume`, { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(response => response.json())
+  .then(data => {
+    log('INFO', 'Resume verzonden, resultaat:', data);
+    
+    // Update status
+    stopStatusEl.textContent = "inactief";
+    stopStatusEl.classList.remove('active');
+    emergencyActive = false;
+    
+    // Update actie log
+    updateLastAction("systeem herstart");
+  })
+  .catch(err => {
+    log('ERROR', 'Fout bij versturen resume:', err);
+    alert('Fout bij versturen resume: ' + err.message);
+  });
+}
+
+/**
+ * Verstuur bewegingscommando
+ */
 function sendMove() {
+  // Als noodstop actief is, sta geen beweging toe
+  if (emergencyActive) {
+    alert('Kan geen bewegingscommando versturen tijdens noodstop.');
+    return;
+  }
+  
   const unitId = document.getElementById('unitId').value;
   const targetStr = document.getElementById('target').value;
   const parts = targetStr.split(',');
@@ -141,60 +320,65 @@ function sendMove() {
     return;
   }
   
-  // BELANGRIJKE AANPASSING: wissel x en y voor Webots
-  // GUI-coördinaten (door gebruiker ingevoerd) worden omgewisseld
-  // naar Webots-coördinaten (y,x)
+  // Haal coördinaten en valideer
   const guiX = Number(parts[0].trim());
   const guiY = Number(parts[1].trim());
   
-  // Stuur naar Webots met juiste conversie (en deel door 10)
-  const webotsY = guiX / 10; // GUI X wordt Webots Y
-  const webotsX = guiY / 10; // GUI Y wordt Webots X
+  // Valideer
+  const validatedPos = validateCoordinates(guiX, guiY);
+  
+  // Controleer obstakels
+  if (!validateGridPosition(validatedPos.x, validatedPos.y)) {
+    alert('Deze locatie bevat een obstakel of is buiten het bereik. Kies een andere locatie.');
+    return;
+  }
+  
+  // Converteer van GUI grid naar Webots coördinaten (let op de omwisseling en schaal)
+  const webotsX = validatedPos.y / 10;  // GUI Y wordt Webots X
+  const webotsY = validatedPos.x / 10;  // GUI X wordt Webots Y
   
   const target = { x: webotsX, y: webotsY };
+  log('INFO', `Move commando: GUI(${validatedPos.x},${validatedPos.y}) -> Webots(${webotsX},${webotsY})`);
   
-  console.log(`Move commando: GUI(${guiX},${guiY}) -> Webots(${webotsX},${webotsY})`);
-  
-  fetch('http://localhost:5001/move', {
+  fetch(`${API_BASE}/move`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ unitId, target })
   })
   .then(res => res.json())
   .then(data => {
-    console.log('Move opdracht verzonden:', data);
-    alert(`Bot ${unitId} wordt verplaatst naar (${guiX},${guiY})`);
+    log('INFO', 'Move opdracht verzonden, resultaat:', data);
+    
+    // Update actie log
+    updateLastAction(`${unitId} naar (${validatedPos.x},${validatedPos.y})`);
   })
   .catch(err => {
-    console.error('Fout bij versturen move-opdracht:', err);
+    log('ERROR', 'Fout bij versturen move-opdracht:', err);
     alert('Fout bij versturen move-opdracht: ' + err.message);
   });
 }
 
-// Voeg rij met opdrachten toe
+/**
+ * Update de queue-display met robot status
+ */
 function updateQueueDisplay() {
   const queueContent = document.getElementById('queue-content');
   if (queueContent) {
     queueContent.innerHTML = '';
     
-    // Standaard units toevoegen, zelfs als niet in robots
-    const unitIds = ['bot1', 'unit0', 'unit1', 'unit2'];
+    // Vaste set van robots weergeven
+    const unitIds = ['bot1', 'bot2', 'bot3'];
     
-    // Voeg ook alle gevonden robot IDs toe
-    for (const id in robots) {
-      if (!unitIds.includes(id)) {
-        unitIds.push(id);
-      }
-    }
-    
-    // Maak rij voor elke robot
     unitIds.forEach(id => {
-      const robot = robots[id];
-      let statusText = 'geen opdrachten';
+      let statusText = 'niet verbonden';
+      let gridPos = { x: '-', y: '-' };
       
-      if (robot && robot.msg && robot.msg.location) {
-        const gridPos = coordinateToGridBlock(robot.msg.location.x, robot.msg.location.y);
-        statusText = `positie: (${gridPos.x},${gridPos.y})`;
+      if (robots[id] && robots[id].msg && robots[id].msg.location) {
+        gridPos = coordinateToGridBlock(
+          robots[id].msg.location.x,
+          robots[id].msg.location.y
+        );
+        statusText = `positie: (${gridPos.x}, ${gridPos.y})`;
       }
       
       queueContent.innerHTML += `<p>${id}: ${statusText}</p>`;
@@ -202,5 +386,28 @@ function updateQueueDisplay() {
   }
 }
 
-// Start met data ophalen en updates
+/**
+ * Update de "laatste actie" status
+ */
+function updateLastAction(action) {
+  lastActionEl.textContent = action;
+  
+  // Laat actie 5 seconden zien, dan leegmaken
+  setTimeout(() => {
+    if (lastActionEl.textContent === action) {
+      lastActionEl.textContent = '';
+    }
+  }, 5000);
+}
+
+// Polling interval voor data ophalen (1 sec)
 setInterval(fetchRobots, 1000);
+// Check emergency status every 2 seconds
+setInterval(fetchEmergencyStatus, 2000);
+
+// Initial fetch
+fetchRobots();
+fetchEmergencyStatus();
+
+// Init bericht
+log('INFO', 'Dashboard geïnitialiseerd');

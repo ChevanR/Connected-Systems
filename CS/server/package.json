@@ -1,7 +1,7 @@
 {
   "name": "cs-server",
   "version": "1.0.0",
-  "description": "Node.js server voor Connected Systems",
+  "description": "Node.js server voor Connected Systems Project",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
