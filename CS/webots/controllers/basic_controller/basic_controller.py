@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Webots robot controller voor Connected Systems.
 Deze controller:
@@ -13,6 +12,7 @@ import time
 import random
 import logging
 import sys
+import heapq
 from controller import Supervisor
 
 # --- Logging configuratie ---
@@ -37,7 +37,24 @@ except Exception as e:
 STEP_SIZE = 0.1  # Beweegstap in Webots (0.1 per iteratie)
 OBSTACLE_THRESHOLD = 450  # Drempelwaarde voor obstakeldetectie
 MIN_BOUND, MAX_BOUND = 0.0, 0.9  # Bewegingsgrenzen in de Webots-wereld
-START_POS = [0.0, 0.0, 0.0]  # Startpositie [x, y, z]
+START_POS = [0.9, 0.0, 0.0]  # Startpositie [x, y, z]
+# --- Griddefinitie (1 = pad, 0 = muur) ---
+GRID = [
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,0,1,0,1,1,0,1,0,1],
+    [1,1,1,1,1,1,1,1,1,1]
+]
+
+GRID_HEIGHT = len(GRID)
+GRID_WIDTH = len(GRID[0])
+
 # Willekeurige startdoelpositie binnen grenzen
 TARGET_POS = [
     round(random.uniform(0.3, 0.7), 1),
@@ -46,7 +63,7 @@ TARGET_POS = [
 # Globale variabele voor noodstop
 emergency_stop = False
 # Robot ID (kan worden aangepast indien nodig)
-ROBOT_ID = "bot1"
+ROBOT_ID = "bot2"
 
 logger.info("Configuratie: START_POS=%s, TARGET_POS=%s", START_POS, TARGET_POS)
 
@@ -203,14 +220,15 @@ def detect_obstacles():
     Geeft een lijst terug met richting ("N", "E", "S", "W") voor elke geblokkeerde richting.
     """
     try:
+   
         obstacles = []
-        # Lees sensorwaarden
+        # Read sensor values
         dN = sensor_N.getValue()
         dE = sensor_E.getValue()
         dS = sensor_S.getValue()
         dW = sensor_W.getValue()
         
-        # Bepaal per richting of er een obstakel is
+        # Check for obstacles in each direction
         if dN < OBSTACLE_THRESHOLD:
             obstacles.append("N")
         if dE < OBSTACLE_THRESHOLD:
@@ -219,6 +237,7 @@ def detect_obstacles():
             obstacles.append("S")
         if dW < OBSTACLE_THRESHOLD:
             obstacles.append("W")
+
             
         logger.debug("Sensorwaarden -> N: %.2f, E: %.2f, S: %.2f, W: %.2f", dN, dE, dS, dW)
         return obstacles
@@ -333,74 +352,102 @@ def choose_alternative_direction(primary, obstacles):
     return None  # Geen alternatief gevonden
 
 # --- Beweeg naar doelpositie ---
+path_cache = []
+
 def move_to_target():
     """
-    Beweeg de robot stapsgewijs naar de doelpositie.
-    Zoekt een pad, vermijdt obstakels, en zorgt voor exacte stappen.
+    Gebruik Dijkstra padplanning om stapsgewijs naar de doelpositie te bewegen.
     """
-    # Als noodstop actief is, beweeg niet
+    global path_cache
+
     if emergency_stop:
         logger.info("NOODSTOP actief - geen beweging toegestaan")
         return
-        
-    try:
-        # Huidige positie en doelpositie
-        pos = trans.getSFVec3f()
-        current_x = round(pos[0], 1)
-        current_y = round(pos[1], 1)
-        target_x, target_y = TARGET_POS
-        
-        # Controleer of doel bereikt is
-        if abs(current_x - target_x) < STEP_SIZE and abs(current_y - target_y) < STEP_SIZE:
-            logger.info("Doel bereikt! (%f, %f)", target_x, target_y)
-            turn_leds_off()
+
+    pos = trans.getSFVec3f()
+    current_gx, current_gy = world_to_grid(pos[0], pos[1])
+    target_gx, target_gy = world_to_grid(TARGET_POS[0], TARGET_POS[1])
+
+    # Als pad leeg of doel gewijzigd: herbereken
+    if not path_cache or (target_gx, target_gy) != path_cache[-1]:
+        path_cache = dijkstra(GRID, (current_gx, current_gy), (target_gx, target_gy))
+        if not path_cache:
+            logger.warning("Geen pad gevonden naar (%d, %d)", target_gx, target_gy)
             return
-            
-        # Bepaal bewegingsrichting
-        dx = target_x - current_x
-        dy = target_y - current_y
+
+    # Volgende stap op pad
+    next_step = path_cache.pop(0)
+    new_x, new_y = grid_to_world(*next_step)
+
+    # Verplaats robot
+    if set_position(new_x, new_y):
+        dx = next_step[0] - current_gx
+        dy = next_step[1] - current_gy
+        dir_map = {(0,1): "N", (1,0): "E", (0,-1): "S", (-1,0): "W"}
+        direction = dir_map.get((dx, dy), "?")
+
+        # LED mappings according to your description
+        led_N.set(1 if direction == "S" else 0)  # North LED should light for West movement
+        led_E.set(1 if direction == "E" else 0)  # East LED should light for North movement
+        led_S.set(1 if direction == "N" else 0)  # South LED should light for East movement
+        led_W.set(1 if direction == "W" else 0)  # West LED should light for South movement
         
-        # Kies primaire richting (grote afstand eerst)
-        if abs(dx) >= abs(dy):
-            primary = "E" if dx > 0 else "W"
-        else:
-            primary = "N" if dy > 0 else "S"
-            
-        # Detecteer obstakels
-        obstacles = detect_obstacles()
         
-        # Kies richting (primair of alternatief)
-        chosen_direction = primary
-        if primary in obstacles:
-            alt = choose_alternative_direction(primary, obstacles)
-            if alt:
-                logger.info("Primaire richting %s geblokkeerd, alternatief %s gekozen", primary, alt)
-                chosen_direction = alt
-            else:
-                logger.warning("Geen vrije richting beschikbaar; geen beweging mogelijk")
-                return
-                
-        # Bereken nieuwe positie (precies 1 stap)
-        new_x, new_y = current_x, current_y
-        if chosen_direction == "E":
-            new_x += STEP_SIZE
-        elif chosen_direction == "W":
-            new_x -= STEP_SIZE
-        elif chosen_direction == "N":
-            new_y += STEP_SIZE
-        elif chosen_direction == "S":
-            new_y -= STEP_SIZE
-            
-        # Positie instellen
-        if set_position(new_x, new_y):
-            # LED's weergeven om bewegingsrichting aan te geven
-            led_N.set(1 if chosen_direction == "N" else 0)
-            led_E.set(1 if chosen_direction == "E" else 0)
-            led_S.set(1 if chosen_direction == "S" else 0)
-            led_W.set(1 if chosen_direction == "W" else 0)
-            logger.info("Beweeg %s: nieuwe positie = (%.1f, %.1f)", chosen_direction, new_x, new_y)
-    except Exception as e:
-        logger.error("Fout tijdens bewegen: %s", e)
+        logger.info("Beweeg naar grid (%d,%d) wereld (%.1f, %.1f) richting %s", 
+                    next_step[0], next_step[1], new_x, new_y, direction)
+
+        
+def world_to_grid(x, y):
+    """Zet Webots-positie om naar gridpositie"""
+    gx = int(round(x / STEP_SIZE))
+    gy = GRID_HEIGHT - 1 - int(round(y / STEP_SIZE))  # omgekeerde Y-as
+    return gx, gy
+
+
+def grid_to_world(gx, gy):
+    """Zet gridpositie om naar Webots-positie"""
+    x = round(gx * STEP_SIZE, 1)
+    y = round((GRID_HEIGHT - 1 - gy) * STEP_SIZE, 1)
+    return x, y
+    
+
+def dijkstra(grid, start, goal):
+    """Vind kortste pad met Dijkstra’s algoritme"""
+    queue = []
+    heapq.heappush(queue, (0, start))
+    visited = set()
+    came_from = {}
+
+    while queue:
+        cost, current = heapq.heappop(queue)
+        if current in visited:
+            continue
+        visited.add(current)
+
+        if current == goal:
+            break
+
+        x, y = current
+        neighbors = [
+            (x+1, y), (x-1, y),
+            (x, y+1), (x, y-1)
+        ]
+        for nx, ny in neighbors:
+            if 0 <= nx < GRID_WIDTH and 0 <= ny < GRID_HEIGHT:
+                if grid[ny][nx] == 1 and (nx, ny) not in visited:
+                    heapq.heappush(queue, (cost + 1, (nx, ny)))
+                    came_from[(nx, ny)] = current
+
+    # Pad reconstrueren
+    path = []
+    node = goal
+    while node != start:
+        path.append(node)
+        node = came_from.get(node)
+        if node is None:
+            return []  # Geen pad
+    path.reverse()
+    return path
 
 # --- Hoofdlus ---
 logger.info("Simulatie gestart")
