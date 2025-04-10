@@ -1,11 +1,12 @@
 """
-Webots robot controller for Connected Systems.
+Webots robot controller voor Connected Systems.
 
-This controller:
-- Moves the robot to the target position
-- Detects obstacles with sensors
-- Communicates via MQTT with the server
-- Handles MOVE and EMERGENCY_STOP commands
+Deze controller:
+- Beweegt de robot naar de doelpositie
+- Detecteert obstakels met sensoren
+- Communiceert via MQTT met de server
+- Handelt MOVE en EMERGENCY_STOP commando's af
+- Vermijdt botsingen met andere robots
 """
 
 import paho.mqtt.client as mqtt
