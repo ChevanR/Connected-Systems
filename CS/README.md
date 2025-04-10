@@ -25,20 +25,20 @@ docker-compose up --build
 
 
 ## System structure
-├── robots/
-│ └── controllers/
-│ └── basic_controller.py
-├── server/
-│ ├── server.js
-│ └── Dockerfile.server
-├── dashboard/
-│ ├── public/
-│ │ ├── index.html
-│ │ ├── style.css
-│ │ └── script.js
-│ └── Dockerfile.dashboard
-├── protocol.md
-└── docker-compose.yml
+- ├── robots/
+- │ └── controllers/
+- │ └── basic_controller.py
+- ├── server/
+- │ ├── server.js
+- │ └── Dockerfile.server
+- ├── dashboard/
+- │ ├── public/
+- │ │ ├── index.html
+- │ │ ├── style.css
+- │ │ └── script.js
+- │ └── Dockerfile.dashboard
+- ├── protocol.md
+- └── docker-compose.yml
 
 
 ## Usage
