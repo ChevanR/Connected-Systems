@@ -19,9 +19,9 @@ A distributed system for coordinating autonomous robots with real-time communica
 - **Containerization**: Docker
 
 ## Installation
-git clone https://github.com/ChevanR/Connected-Systems.git
-cd connected-systems
-docker-compose up --build
+1. git clone https://github.com/ChevanR/Connected-Systems.git
+2. cd connected-systems
+3. docker-compose up --build
 
 
 ## System structure
