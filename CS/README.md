@@ -1,51 +1,62 @@
-# Connected Systems project
+# Connected Systems - Robot coordination platform
 
-Dit project bouwt een connected system waarin een Webots-simulatie een robot bestuurt die via MQTT berichten verstuurt met zijn positie en sensorinformatie. Een centrale Node.js-server (met Express en MQTT),
-verzamelt deze gegevens en biedt een REST API. Een web-dashboard (gedraaid via nginx) toont live de robotcoördinaten en biedt knoppen om opdrachten te versturen.
+A distributed system for coordinating autonomous robots with real-time communication, collision avoidance, and web-based control.
 
-## Systeem overzicht
+## Key features
+- Real-time MQTT communication between robots/server
+- REST API for dashboard interactions
+- Dynamic pathfinding with obstacle/collision avoidance
+- Priority-based command queuing system
+- Emergency stop/resume functionality
+- Web-based monitoring dashboard
 
-- **Webots controller (Python):**
-  - Publiceert status (positie en obstakels) via MQTT naar `robot/status` op de publieke broker (`test.mosquitto.org`).
-  
-- **Node.js server:**
-  - Abonneert zich op `robot/status`
-  - Slaat ontvangen berichten op in een in-memory object (`robotData`)
-  - Biedt RESTisaties:
-    - **GET /robots:** Retourneert de laatste status van de robot
-    - **POST /move:** Verstuurt een MOVE-opdracht via MQTT
-    - **POST /emergency_stop:** Verstuurt een noodstop-opdracht via MQTT
-  - Heeft uitgebreide logging en foutafhandeling voor debugging
+## Technologies
+- **Core protocol**: MQTT + REST
+- **Robots**: Webots simulator + Python controllers
+- **Server**: Node.js + Express
+- **Dashboard**: HTML5/Canvas + JavaScript + CSS
+- **Hardware**: ESP32 microcontrollers
+- **Containerization**: Docker
 
-- **Dashboard:**
-  - Wordt geserveerd door een nginx-container
-  - Haalt via HTTP GET de robotdata op van de Node.js server (http://localhost:5001/robots)
-  - Tekent de robotpositie op een canvas
-  - Laat de gebruiker opdrachten invoeren (Move en Noodstop)
+## Installation
+git clone https://github.com/ChevanR/Connected-Systems.git
+cd connected-systems
+docker-compose up --build
 
-## Installatie & Deployment
 
-### Vereisten
-- **Docker** en **Docker Compose**
-- Indien je lokaal npm wilt gebruiken: **Node.js** en **npm** (of gebruik de Docker-container)
+## System structure
+├── robots/
+│ └── controllers/
+│ └── basic_controller.py
+├── server/
+│ ├── server.js
+│ └── Dockerfile.server
+├── dashboard/
+│ ├── public/
+│ │ ├── index.html
+│ │ ├── style.css
+│ │ └── script.js
+│ └── Dockerfile.dashboard
+├── protocol.md
+└── docker-compose.yml
 
-### Build & Run
 
-1. Clone dit project in je map `CS`.
-2. Navigeer naar de root map (waar de `docker-compose.yml` staat).
-3. Voer het volgende commando uit om de containers op te bouwen en te starten:
-    ```
-    docker-compose up --build
-    ```
-4. De Node.js-server draait op: [http://localhost:5001](http://localhost:5001)  
-   Het dashboard draait op: [http://localhost:8080](http://localhost:8080)
-   
-5. Pas je Webots controller aan om gebruik te maken van deze opzet.
+## Usage
+1. Start system: `docker-compose up`
+2. Access dashboard: `http://localhost:8080`
+3. Send commands via:
+   - Web interface
+   - REST API: `POST /api/command`
+   - MQTT: `robot/command` topic
 
-## Verder onderzoek
+## API Documentation
+See [protocol.md](./protocol.md) for detailed message specifications and endpoints.
 
-- Controleer de logboeken van de containers voor debugging:
-  - Server logs: `docker-compose logs server`
-  - Dashboard logs: `docker-compose logs dashboard`
-- Voor MQTT-testen kun je het optionele script in `mqtt/mqtt_tester.py` gebruiken.
+## Troubleshooting
+Monitor MQTT traffic:
+mosquitto_sub -h test.mosquitto.org -t "robot/#" -v
 
+## Contributors
+- Chevan ([@chevanr](https://github.com/chevanr))
+- Wen ([@wennhao](https://github.com/wennhao))
+- Jason ([@jason](https://github.com/jason))
