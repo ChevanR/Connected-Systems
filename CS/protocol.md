@@ -12,7 +12,7 @@
 - [Version Management](#version-management)
 
 ## Introduction
-This protocol governs communication between robots, control servers, and user interfaces in the Connected Systems platform. It combines MQTT for real-time messaging and REST for dashboard interactions, enabling reliable coordination of autonomous robots in shared environments.
+This protocol explains communication between robots, control servers, and user interfaces in the Connected Systems platform. It combines MQTT for real-time messaging and REST for dashboard interactions, allowing reliable coordination of autonomous robots in shared environments.
 
 ## Architecture overview
 
@@ -67,8 +67,8 @@ Server -> Dashboard: WebSocket updates
 ### Command types
 
 | Command type     | Format example                                                | Purpose                          |
-|------------------|--------------------------------------------------------------|----------------------------------|
-| Movement         | `{"command":"MOVE","target":{"x":0.5,"y":0.7}}`              | Navigate to specified coordinates|
+|------------------|---------------------------------------------------------------|----------------------------------|
+| Movement         | `{"command":"MOVE","target":{"x":0.5,"y":0.7}}`               | Navigate to specified coordinates|
 | Emergency stop   | `{"command":"EMERGENCY_STOP"}`                                | Immediate system halt            |
 | Resume           | `{"command":"RESUME"}`                                        | Resume after emergency stop      |
 | Queue clear      | `{"command":"CLEAR_QUEUE"}`                                   | Reset pending commands           |

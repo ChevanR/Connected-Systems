@@ -401,7 +401,6 @@ def set_position(x, y):
 
 # --- Manhattan distance heuristic ---
 def heuristic(a, b):
-    """Manhattan distance heuristic voor A* padbepaling"""
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 # --- Zoek dichtsbijzijnde valide positie ---
@@ -473,7 +472,7 @@ def mark_robot_obstacles(grid, other_robot_positions):
 def predict_robot_positions(robot_positions, prediction_steps=PREDICTION_STEPS):
     """
     Voorspel toekomstige posities van robots op basis van recente bewegingen
-    Dit helpt botsingen met bewegende robots te vermijden
+    Helpt botsingen met bewegende robots te vermijden
     """
     # Als we nog geen historische gegevens hebben, retourneer alleen huidige posities
     if not hasattr(predict_robot_positions, "history"):
@@ -544,8 +543,9 @@ def dijkstra(grid, start, goal, other_robot_positions=None):
     if (0 <= start[0] < GRID_WIDTH and 0 <= start[1] < GRID_HEIGHT and 
         0 <= goal[0] < GRID_WIDTH and 0 <= goal[1] < GRID_HEIGHT):
         # Zorg ervoor dat start en doel niet als obstakels worden gemarkeerd
-        temp_grid[start[1]][start[0]] = 1
+        temp_grid[start[1]][start[0]] = 1  # y,x volgorde
         temp_grid[goal[1]][goal[0]] = 1
+
     
     # Setup voor A* algoritme (Dijkstra is A* met h=0)
     queue = []
@@ -605,7 +605,7 @@ def dijkstra(grid, start, goal, other_robot_positions=None):
                 return []  # Dit zou niet moeten gebeuren, maar voor de zekerheid
         
         path.reverse()
-        return path
+        return path # Werkt voor nu
     
     # Normale padreconstructie als pad bestaat
     path = []

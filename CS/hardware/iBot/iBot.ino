@@ -3,9 +3,10 @@
 #include <ArduinoJson.h>
 
 // ==== WiFi ====
+// Werkt soms niet bij herstart
 const char* ssid = "iPhone";
-const char* password = "12345678";
-
+const char* password = "12345678"; // TODO: Wachtwoord veiliger maken
+ 
 // ==== MQTT ====
 const char* mqtt_server   = "test.mosquitto.org";
 const int   mqtt_port     = 1883;
@@ -140,6 +141,7 @@ bool reconnect() {
 
 // ==== Setup ====
 void setup() {
+  // Eerste opstartpoging
   Serial.begin(115200);
   
   // LED-pinnen als OUTPUT instellen
@@ -156,7 +158,7 @@ void setup() {
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    Serial.print("."); // Laadanimatie
   }
   Serial.println("\nWiFi verbonden!");
   

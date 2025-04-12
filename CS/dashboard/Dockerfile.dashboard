@@ -6,7 +6,7 @@ RUN rm -rf /usr/share/nginx/html/*
 # Kopieer dashboard bestanden
 COPY . /usr/share/nginx/html
 
-# Poort 80 exposeren voor HTTP
+# Poort 80 expose voor HTTP
 EXPOSE 80
 
 # Start nginx

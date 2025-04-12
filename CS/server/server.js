@@ -166,9 +166,7 @@ client.on('message', (topic, message) => {
     }
 });
 
-/**
- * REST API Endpoints
- */
+// REST API Endpoints
 
 // GET /robots - Haal alle robotstatussen op
 app.get('/robots', (req, res) => {
@@ -180,7 +178,8 @@ app.get('/queues', (req, res) => {
     res.json(robotQueues);
 });
 
-// GET /emergency_status - Haal huidige noodstop status op
+// GET /emergency_status - Haal huidige noodstop status op 
+// TODO: Error handling verbeteren
 app.get('/emergency_status', (req, res) => {
     res.json({ active: emergencyStopActive });
 });
@@ -201,6 +200,7 @@ app.post('/emergency_stop', (req, res) => {
 
     // Verstuur 3x voor betrouwbaarheid
     for (let i = 0; i < 3; i++) {
+        // Eerste implementatie zonder retries
         publishCommand(MQTT_TOPICS.COMMAND, command, (err) => {
             if (err) {
                 log('ERROR', `Attempt ${i+1}: Error sending emergency stop:`, err);
@@ -210,7 +210,7 @@ app.post('/emergency_stop', (req, res) => {
         });
     }
 
-    res.json({ status: "Emergency stop activated", active: true });
+    res.json({ status: "Emergency stop activated", active: true }); // Onzekere response
 });
 
 // POST /resume - Deactiveer noodstop
