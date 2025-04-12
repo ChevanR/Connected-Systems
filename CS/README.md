@@ -49,31 +49,31 @@ cd Connected-Systems
 docker-compose up --build
 
 ## System structure
-├── webots/
-│ └── controllers/
-│ │  └── basic_controller/
-│ │     └── basic_controller.py
-│ │── protos/
-│ │  ├── iBot_led.proto
-│ │  └── iBot.proto
-│ └── worlds/
-│     ├── .MyArena.jpg
-│     ├── .MyArena.wbproj
-│     └── MyArena.wbt
-├── server/
-│ ├── server.js
-│ ├── package.json
-│ └── Dockerfile.server
-├── dashboard/
-│ ├── index.html
-│ ├── style.css
-│ ├── script.js
-│ └── Dockerfile.dashboard
-├── hardware/
-│ └── iBot.ino
-├── protocol.md
-├── README.md
-└── docker-compose.yml
+- ├── webots/
+- │ └── controllers/
+- │ │  └── basic_controller/
+- │ │     └── basic_controller.py
+- │ │── protos/
+- │ │  ├── iBot_led.proto
+- │ └── iBot.proto
+- │ └── worlds/
+- │    ├── .MyArena.jpg
+- │    ├── .MyArena.wbproj
+- │        └── MyArena.wbt
+- ├── server/
+- │ ├── server.js
+- │ ├── package.json
+- │ └── Dockerfile.server
+- ├── dashboard/
+- │ ├── index.html
+- │ ├── style.css
+- │ ├── script.js
+- │ └── Dockerfile.dashboard
+- ├── hardware/
+- │ └── iBot.ino
+- ├── protocol.md
+- ├── README.md
+- └── docker-compose.yml
 
 
 ## Usage
