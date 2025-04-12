@@ -157,7 +157,7 @@ client.on('message', (topic, message) => {
             processQueue(sender);
         }
         
-        // Detail logging alleen bij significante wijzigingen
+        // Detail logging alleen bij belangrijke wijzigingen
         const location = data.data.msg && data.data.msg.location ?
             `(${data.data.msg.location.x}, ${data.data.msg.location.y})` : 'unknown';
         log('INFO', `Status received from ${sender}: position=${location}`);
@@ -198,7 +198,7 @@ app.post('/emergency_stop', (req, res) => {
         }
     };
 
-    // Verstuur 3x voor betrouwbaarheid
+    // Verstuur 3x voor zekerheid
     for (let i = 0; i < 3; i++) {
         // Eerste implementatie zonder retries
         publishCommand(MQTT_TOPICS.COMMAND, command, (err) => {
@@ -319,7 +319,7 @@ app.post('/clear_queue', (req, res) => {
     });
 });
 
-// Helper functie voor MQTT publiceren met foutafhandeling
+// Helper functie voor MQTT publiceren met errorhandling
 function publishCommand(topic, command, callback) {
     const payload = JSON.stringify(command);
     client.publish(topic, payload, (err) => {
